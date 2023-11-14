@@ -1,4 +1,4 @@
-# RejuvenateAI x Web3 ATL hack 
+# RejuvenateAI x Lukso hack 
 
 Live Demo - [Loom video](https://www.loom.com/share/5a032880b54a422db23ef9edde0b9fdb) <br />
 Live Link - [RejuvenateAI dapp](https://rejuvenate-ai-czgn.vercel.app/) <br />
@@ -35,16 +35,16 @@ Here's a breakdown of how it was built:
 
 ## Where we deployed to/contract details
 
-We created and deployed our smart contracts on the Arbitrum Goerli testnet chain. 
+We created and deployed our smart contracts on the Lukso testnet chain. 
 
-### Arbitrum Goerli Testnet
+### Lukso Testnet
 
-1. Community contract 0x3a65168B746766066288B83417329a7F901b5569 - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/Community.sol) | [View on ArbitrumGoerli](https://goerli.arbiscan.io/address/0x3a65168B746766066288B83417329a7F901b5569)
+1. Community contract 0x3a65168B746766066288B83417329a7F901b5569 - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/Community.sol) | [View on lukso](https://goerli.arbiscan.io/address/0x3a65168B746766066288B83417329a7F901b5569)
 
-2. Treasury contract 0x9E1eF5A92C9Bf97460Cd00C0105979153EA45b27 - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/Treasury.sol) | [View on ArbitrumGoerli](https://goerli.arbiscan.io/address/0x9E1eF5A92C9Bf97460Cd00C0105979153EA45b27)
+2. Treasury contract 0x9E1eF5A92C9Bf97460Cd00C0105979153EA45b27 - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/Treasury.sol) | [View on lukso](https://goerli.arbiscan.io/address/0x9E1eF5A92C9Bf97460Cd00C0105979153EA45b27)
 
-3. User NFT contract 0x6D919b8dC30BEf41b56Aa8b18b2052c9459F8E9A - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/UserNFT.sol) | [View on ArbitrumGoerli](https://goerli.arbiscan.io/address/0x6D919b8dC30BEf41b56Aa8b18b2052c9459F8E9A)
+3. User NFT contract 0x6D919b8dC30BEf41b56Aa8b18b2052c9459F8E9A - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/UserNFT.sol) | [View on lukso](https://goerli.arbiscan.io/address/0x6D919b8dC30BEf41b56Aa8b18b2052c9459F8E9A)
 
-4. Nutritionist NFT contract 0xA39d26482B5c226Fd02A5f3e159C72ee03d63Fc0 - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/NutritionistNFT.sol) | [View on ArbitrumGoerli](https://goerli.arbiscan.io/address/0xA39d26482B5c226Fd02A5f3e159C72ee03d63Fc0)
+4. Nutritionist NFT contract 0xA39d26482B5c226Fd02A5f3e159C72ee03d63Fc0 - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/NutritionistNFT.sol) | [View on lukso](https://goerli.arbiscan.io/address/0xA39d26482B5c226Fd02A5f3e159C72ee03d63Fc0)
 
 
