@@ -1,0 +1,8 @@
+Deploying treasury for Aurora
+---- Treasury Contract was deployed to: ----  0xff4c759b5e2D4923Dde13071dc5677A02B6a8EC3
+Deploying Community contract for Aurora
+---- Community Contract for Aurora was deployed to aurora testnet at this address: ----  0x6083A218DF607c21CdD9677eB247286CA73d146C
+Deploying UserNFT for Aurora....
+---- UserNFT Contract was deployed to: ----  0xCA836dA8ED627C21226e3B59a3a4F1942B2D1Cc2
+Deploying NutritionistNFT for Aurora....
+---- NutritionistNFT Contract was deployed to: ----  0x6e2C11794C29e544AF675e1C0AEcF48Ed299d821
