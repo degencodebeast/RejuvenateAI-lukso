@@ -1,6 +1,9 @@
 {
   "name": "rejuvenate-ai",
   "packageManager": "yarn@3.4.1",
+  "scripts": {
+    "build": "hardhat compile --force --show-stack-traces"
+  },
   "devDependencies": {
     "@ethersproject/abi": "^5.4.7",
     "@ethersproject/providers": "^5.4.7",

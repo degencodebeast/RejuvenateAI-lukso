@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import {IUserNFT} from "./interfaces/IUserNFT.sol";
 import {INutritionistNFT} from "./interfaces/INutritionistNFT.sol";
-import {ModicumContract} from "./interfaces/ModicumContract.sol";
 
 error AlreadyAMember();
 
@@ -88,20 +87,6 @@ contract Community is Ownable {
         Active,
         Expired
     }
-
-    uint256 public lilypadFee = 2;
-
-    mapping(uint256 => string) public jobIdToResultUrl;
-
-    struct Result {
-        uint256 jobID;
-        string cid;
-        string httpString;
-    }
-
-    Result[] public results;
-
-    event ReceivedJobResults(uint256 jobID, string cid);
 
     struct NutritionistApplication {
         string dataURI;
@@ -268,7 +253,7 @@ contract Community is Ownable {
         uint256 userTokenId = userNFT.getTokenIdOfOwner(user.userAddress);
 
         userNFT.burn(user.userAddress, userTokenId);
-        //nft will be used for access control with lighthouse
+        
     }
 
     /// @notice Function used to apply to community

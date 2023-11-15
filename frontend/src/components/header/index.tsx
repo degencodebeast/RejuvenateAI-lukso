@@ -5,14 +5,13 @@ import { Link } from '@chakra-ui/next-js';
 import RejuvenateAi from '../../images/svg/rejuvenate-logo.svg';
 import { useAppContext } from '@/context/state';
 import RegisterForm from '../register-form';
-import { useAccount } from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 const Header = ({ bg = 'transparent' }: { bg?: string }) => {
   const { setAddress } = useAppContext();
-  const { address } = useAccount();
-  const { isConnected } = useAccount();
-  const { openConnectModal } = useConnectModal();
+  //const { address } = useAccount();
+  const address = "";
+  // const { isConnected } = useAccount();
+  // const { openConnectModal } = useConnectModal();
 
   useEffect(() => {
     setAddress(`${address}`);
@@ -42,7 +41,7 @@ const Header = ({ bg = 'transparent' }: { bg?: string }) => {
         ) : (
           <button
             type='submit'
-            onClick={openConnectModal}
+            // onClick={openConnectModal}
             className='btn w-full max-w-[200px] flex items-center justify-center bg-[#014421] h-[48px] px-5 lg:h-[50px] font-bold text-base lg:text-[20px] text-[#F5F5DC] rounded-xl'
           >
             Connect Wallet
