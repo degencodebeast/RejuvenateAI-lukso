@@ -30,11 +30,12 @@ export default function DashboardSideBar(props: {
         }`}
       >
         <Link
+          textDecor={'none!important'}
           href={buildLink(props?.entryPath + '/', link?.url)}
           alignItems={'center'}
           className='flex gap-[40px]'
         >
-          {/* <Icon name={link?.icon} /> */}
+          <Icon name={link?.icon} />
           <span>{link?.title}</span>
         </Link>
       </ListItem>

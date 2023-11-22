@@ -3,6 +3,8 @@ export const appName = 'REJUVENATE_AI';
 export const IPFS_GATEWAY_BASE_URL = "https://ipfs.io/ipfs"; //havinf cors issue with lukso IPFS_GATEWAY_BASE_URL
 export const IPFS_BASE_URL = 'https://api.2eff.lukso.dev';
 
+export const communityAddr = ""
+
 export const CHAIN_IDS = {
   L14: 22,
   L14_HEX: '0x16',

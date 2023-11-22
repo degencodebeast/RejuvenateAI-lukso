@@ -19,9 +19,12 @@ import {
   Avatar,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import DashBoardLayout from '../layout';
 export default function DashBoard() {
   const today = new Date().getTime();
   return (
+    <DashBoardLayout>
+
     <Box className='min-h-full h-full px-4 mt-6'>
       <Flex align={'center'} justify={'space-between'}>
         <Flex align={'center'} gap={6}>
@@ -73,7 +76,7 @@ export default function DashBoard() {
                     rounded={'full'}
                     gap={2}
                     className='hover:bg-primaryYellow hover:text-primaryGreen text-primaryBeige bg-primaryGreen'
-                  >
+                    >
                     <Icon size={20} name='phone' /> Start Call
                   </Button>
                   <Button
@@ -81,7 +84,7 @@ export default function DashBoard() {
                     variant={'outline'}
                     rounded={'full'}
                     className='text-primaryGreen'
-                  >
+                    >
                     View Details
                   </Button>
                 </Flex>
@@ -137,13 +140,13 @@ export default function DashBoard() {
           align={'center'}
           justify={'center'}
           mt={4}
-        >
+          >
           <Flex direction={'column'}>
             <Text
               fontSize={18}
               className='text-secondaryGray'
               fontWeight={'semibold'}
-            >
+              >
               No upcoming appointments
             </Text>
             <Button
@@ -152,12 +155,13 @@ export default function DashBoard() {
               mt={6}
               size={'lg'}
               className='bg-primaryGreen text-primaryBeige hover:text-primaryGreen hover:bg-primaryYellow'
-            >
+              >
               Book a Nutritionist
             </Button>
           </Flex>
         </Flex>
       </Box>
     </Box>
+              </DashBoardLayout>
   );
 }
