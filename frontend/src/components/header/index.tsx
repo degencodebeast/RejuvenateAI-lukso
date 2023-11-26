@@ -7,7 +7,7 @@ import { DataContext } from '../../context/state';
 import RegisterForm from '../register-form';
 import { useConnectWallet } from '@web3-onboard/react';
 import { ethers } from 'ethers';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+// import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { Button, HStack, Text, useDisclosure } from '@chakra-ui/react';
 
 const Header = ({ bg = 'transparent' }: { bg?: string }) => {
@@ -30,7 +30,7 @@ const Header = ({ bg = 'transparent' }: { bg?: string }) => {
   // const openConnectModal = () => {};
   console.log(wallet);
   // const { setAddress } = useAppContext();
-  const { openConnectModal } = useConnectModal();
+  // const { openConnectModal } = useConnectModal();
 
   // useEffect(() => {
   //   setAddress(`${address}`);
@@ -47,14 +47,14 @@ const Header = ({ bg = 'transparent' }: { bg?: string }) => {
           </Link>
         </div>
 
-        <HStack spacing={4}>
+        {/* <HStack spacing={4}>
           <Text as={Link} href={'/'} fontWeight={'medium'}>
             Home
           </Text>
           <Text as={Link} href={'/blog'} fontWeight={'medium'}>
             Blog
           </Text>
-        </HStack>
+        </HStack> */}
         {wallet && (
           <HStack spacing={4}>
             <Button
