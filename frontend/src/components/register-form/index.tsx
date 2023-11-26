@@ -4,7 +4,7 @@ import React, { RefObject, useRef, useState, forwardRef } from 'react';
 import { useRouter } from 'next/router';
 import { useForm, FormProvider, useFormState } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppContext } from '@/context/state';
+// import { useAppContext } from '@/context/state';
 import { ethers } from 'ethers';
 import * as Yup from 'yup';
 import {
@@ -48,7 +48,7 @@ const RegisterForm = ({
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [SelectedUserType, setSelectedUserType] =
     useState<RegisterType>('individual');
-  const { user, setUser, allTokensData } = useAppContext();
+  // const { user, setUser, allTokensData } = useAppContext();
   const [amount, setAmount] = useState('0.01');
   const debouncedAmount = useDebounce<string>(amount, 500);
 
@@ -99,12 +99,12 @@ const RegisterForm = ({
       const cid = await putJSONandGetHash(formDataObject);
 
       setCid(cid);
-      setUser({
-        ...user,
-        userAddress: address,
-        userCidData: cid,
-        name: data.fullName,
-      });
+      // setUser({
+      //   ...user,
+      //   userAddress: address,
+      //   userCidData: cid,
+      //   name: data.fullName,
+      // });
 
       //joinCommunity?.();
     }
