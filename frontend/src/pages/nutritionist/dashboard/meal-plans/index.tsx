@@ -15,10 +15,15 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+
 import { format } from 'date-fns';
+import NutritionistDashBoardLayout from '../layout';
 export default function DashBoard() {
   const today = new Date().getTime();
   return (
+    <NutritionistDashBoardLayout>
+
+
     <Box className='min-h-full h-full px-4 mt-6'>
       <Flex align={'center'} justify={'space-between'}>
         <Flex align={'center'} gap={6}>
@@ -107,5 +112,7 @@ export default function DashBoard() {
         </Table>
       </TableContainer>
     </Box>
+    </NutritionistDashBoardLayout>
+
   );
 }

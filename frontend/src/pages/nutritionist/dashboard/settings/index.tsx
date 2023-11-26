@@ -2,6 +2,7 @@
 
 import DashboardSideBar from '@/components/dashboard-sidebar';
 import { Box } from '@chakra-ui/react';
+import NutritionistDashBoardLayout from '../layout';
 
 export default function DashBoard() {
   const navLinks = [
@@ -11,8 +12,11 @@ export default function DashBoard() {
     { url: '/appointments', title: 'Appointments', icon: 'book_online' },
   ];
   return (
+    <NutritionistDashBoardLayout>
+
     <Box className='min-h-full h-full'>
       {/* <DashboardSideBar links={navLinks} /> */}
     </Box>
+    </NutritionistDashBoardLayout>
   );
 }

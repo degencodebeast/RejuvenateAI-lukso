@@ -9,8 +9,8 @@ import { uploadPromptToIpfs } from '@/helpers/prompt';
 // import toast, { Toaster } from "react-hot-toast";
 import { toast } from 'react-toastify';
 import { Button, Input, Select } from '@chakra-ui/react';
-
-const NutritionistForm = ({showModal=true}:{showModal:boolean}) => {
+import { countries } from '@/utils/countries';
+const NutritionistForm = ({ showModal = true }: { showModal: boolean }) => {
   //const auth = useAuth()
   const router = useRouter();
   const [cid, setCid] = useState('');
@@ -21,6 +21,7 @@ const NutritionistForm = ({showModal=true}:{showModal:boolean}) => {
   const validationSchema = Yup.object().shape({
     fullName: Yup.string().required('Field is required'),
     sex: Yup.string().required('Field is required'),
+    country: Yup.string().required('Field is required'),
     birthDate: Yup.string().required('Field is required'),
     credentials: Yup.mixed().required('Field is required'),
     // .test(
@@ -52,135 +53,148 @@ const NutritionistForm = ({showModal=true}:{showModal:boolean}) => {
     toast.success('Successfully added!');
     setImageUrl(URL.createObjectURL(e.target.files[0]));
   };
-const elem=[ <> <h2 className='text-[45px]'>Register as a Nutritionist</h2>
-<form
-  className='w-full flex flex-col gap-7'
-  onSubmit={handleSubmit(onSubmit)}
->
-  <div>
-    <Input
-      className='w-full max-w-[100%]'
-      {...register('fullName')}
-      placeholder='Full name'
-    />
-    <div className='text-red-200'>{errors.fullName?.message}</div>
-  </div>
-  <div>
-    <Input
-      type='date'
-      id='start'
-      {...register('birthDate')}
-      className=' w-full max-w-[100%]'
-    />
-    <div className='text-red-200'>{errors.birthDate?.message}</div>
-  </div>
-  <div>
-    <Select
-      className='select w-full max-w-[100%]'
-      {...register('sex')}
-      placeholder="What's your biological sex?"
-      defaultValue=''
-    >
-      <option value='' disabled>
-        What&apos;s your biological sex?
-      </option>
-      <option value='name'>Male</option>
-      <option value='female'>Female</option>
-    </Select>
-    <div className='text-red-200'>{errors.sex?.message}</div>
-  </div>
-  <div>
-    <Input
-      type='file'
-      {...register('credentials')}
-      className='Input w-full max-w-[100%]'
-      placeholder='Upload your credentials'
-      onChange={handleFileChange}
-    ></Input>
-    <div className='text-red-200'>{errors.credentials?.message}</div>
-  </div>
-  <div className='flex'>
-    <Button
-      type='submit'
-    >
-      Register as a Nutritionist
-    </Button>
-  </div>
-</form>
-</>
-]
+  const elem = [
+    <>
+      {' '}
+      <h2 className='text-[45px]'>Register as a Nutritionist</h2>
+      <form
+        className='w-full flex flex-col gap-7'
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div>
+          <Input
+            className='w-full max-w-[100%]'
+            {...register('fullName')}
+            placeholder='Full name'
+          />
+          <div className='text-red-200'>{errors.fullName?.message}</div>
+        </div>
+        <div>
+          <Select
+            className='Select w-full max-w-[100%]'
+            {...register('country')}
+            // placeholder="What's your biological sex?"
+            defaultValue=''
+          >
+            <option value='' disabled>
+              Select your country
+            </option>
+
+            {countries.map((country, i) => (
+              <option key={'country' + i} value={country.name}>
+                {country.name}
+              </option>
+            ))}
+          </Select>
+          <div className='text-red-500'>{errors.country?.message}</div>
+        </div>
+        <div>
+          <Input
+            type='date'
+            id='start'
+            {...register('birthDate')}
+            className=' w-full max-w-[100%]'
+          />
+          <div className='text-red-200'>{errors.birthDate?.message}</div>
+        </div>
+        <div>
+          <Select
+            className='select w-full max-w-[100%]'
+            {...register('sex')}
+            placeholder="What's your biological sex?"
+            defaultValue=''
+          >
+            <option value='' disabled>
+              What&apos;s your biological sex?
+            </option>
+            <option value='name'>Male</option>
+            <option value='female'>Female</option>
+          </Select>
+          <div className='text-red-200'>{errors.sex?.message}</div>
+        </div>
+        <div>
+          <Input
+            type='file'
+            {...register('credentials')}
+            className='Input w-full max-w-[100%]'
+            placeholder='Upload your credentials'
+            onChange={handleFileChange}
+          ></Input>
+          <div className='text-red-200'>{errors.credentials?.message}</div>
+        </div>
+        <div className='flex'>
+          <Button type='submit'>Register as a Nutritionist</Button>
+        </div>
+      </form>
+    </>,
+  ];
   return (
     <>
-    {showModal ?
-    
-    <div className='modal'>
-      <label className='modal-overlay' htmlFor='modal-3'></label>
-      <div className='modal-content flex flex-col gap-5 max-w-[90%] lg:max-w-[60%] w-full'>
-        <label
-          htmlFor='modal-3'
-          className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
+      {showModal ? (
+        <div className='modal'>
+          <label className='modal-overlay' htmlFor='modal-3'></label>
+          <div className='modal-content flex flex-col gap-5 max-w-[90%] lg:max-w-[60%] w-full'>
+            <label
+              htmlFor='modal-3'
+              className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
+            >
+              ✕
+            </label>
+            {...elem}
+          </div>
+        </div>
+      ) : (
+        <form
+          className='w-full flex flex-col gap-7'
+          onSubmit={handleSubmit(onSubmit)}
         >
-          ✕
-        </label>
-{...elem}
-            </div>
-    </div>
-    : <form
-    className='w-full flex flex-col gap-7'
-    onSubmit={handleSubmit(onSubmit)}
-  >
-    <div>
-      <Input
-        className='w-full max-w-[100%]'
-        {...register('fullName')}
-        placeholder='Full name'
-      />
-      <div className='text-red-200'>{errors.fullName?.message}</div>
-    </div>
-    <div>
-      <Input
-        type='date'
-        id='start'
-        {...register('birthDate')}
-        className=' w-full max-w-[100%]'
-      />
-      <div className='text-red-200'>{errors.birthDate?.message}</div>
-    </div>
-    <div>
-      <Select
-        className='select w-full max-w-[100%]'
-        {...register('sex')}
-        placeholder="What's your biological sex?"
-        defaultValue=''
-      >
-        <option value='' disabled>
-          What&apos;s your biological sex?
-        </option>
-        <option value='name'>Male</option>
-        <option value='female'>Female</option>
-      </Select>
-      <div className='text-red-200'>{errors.sex?.message}</div>
-    </div>
-    <div>
-      <Input
-        type='file'
-        {...register('credentials')}
-        className='Input w-full max-w-[100%]'
-        placeholder='Upload your credentials'
-        onChange={handleFileChange}
-      ></Input>
-      <div className='text-red-200'>{errors.credentials?.message}</div>
-    </div>
-    <div className='flex'>
-      <Button
-        type='submit'
-      >
-        Register as a Nutritionist
-      </Button>
-    </div>
-  </form>
-    
-    }
+          <div>
+            <Input
+              className='w-full max-w-[100%]'
+              {...register('fullName')}
+              placeholder='Full name'
+            />
+            <div className='text-red-200'>{errors.fullName?.message}</div>
+          </div>
+          <div>
+            <Input
+              type='date'
+              id='start'
+              {...register('birthDate')}
+              className=' w-full max-w-[100%]'
+            />
+            <div className='text-red-200'>{errors.birthDate?.message}</div>
+          </div>
+          <div>
+            <Select
+              className='select w-full max-w-[100%]'
+              {...register('sex')}
+              placeholder="What's your biological sex?"
+              defaultValue=''
+            >
+              <option value='' disabled>
+                What&apos;s your biological sex?
+              </option>
+              <option value='name'>Male</option>
+              <option value='female'>Female</option>
+            </Select>
+            <div className='text-red-200'>{errors.sex?.message}</div>
+          </div>
+          <div>
+            <Input
+              type='file'
+              {...register('credentials')}
+              className='Input w-full max-w-[100%]'
+              placeholder='Upload your credentials'
+              onChange={handleFileChange}
+            ></Input>
+            <div className='text-red-200'>{errors.credentials?.message}</div>
+          </div>
+          <div className='flex'>
+            <Button type='submit'>Register as a Nutritionist</Button>
+          </div>
+        </form>
+      )}
     </>
   );
 };

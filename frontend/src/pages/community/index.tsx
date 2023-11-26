@@ -23,18 +23,10 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import RandomAvatar from 'boring-avatars';
+import BoringAvatar from 'boring-avatars';
 //@ts-ignore
 import DatePicker from 'react-datepicker';
-type Community = {
-  name: string;
-  description: string;
-  cover: string;
-  membersCount: number;
-  id: number;
-  slug: string;
-  members: object[];
-};
+import { Community } from '@/types/state';
 
 const communities = [
   {
@@ -80,25 +72,11 @@ export default function NutritionistPage() {
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
     null
   );
-  const [bookingDate, setBookingDate] = useState(new Date());
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showBookingDetails, setShowBookingDetails] = useState(false);
-  const [sectionDuration, setSectionDuration] = useState(30);
-
-  const minsToMillisec = (mins: number) => +mins * 1000 * 60;
 
   const handleJoin = (community: Community) => {
     setSelectedCommunity(community);
   };
 
-  function handleBookingSubmit() {
-    setIsSubmitting(true);
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast();
-    }, 3000);
-  }
   return (
     <Box
       className='bg-primaryYellowTrans'
@@ -128,7 +106,7 @@ export default function NutritionistPage() {
                 <Flex align={'start'} gap={4} mb={5}>
                   {c.cover && <Avatar size={'lg'} src={c.cover} />}
                   {!c.cover && (
-                    <RandomAvatar
+                    <BoringAvatar
                       variant='sunset'
                       colors={[
                         '#92A1C6',
