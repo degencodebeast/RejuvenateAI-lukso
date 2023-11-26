@@ -3,11 +3,11 @@
 import DashBoardHeader from '@/components/dashboard-header';
 import DashboardSideBar from '@/components/dashboard-sidebar';
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
-import DashBoardLayout from './layout';
+import NutritionistDashBoardLayout from './layout';
 
 export default function DashBoard() {
   return (
-    <DashBoardLayout>
+    <NutritionistDashBoardLayout>
       <Box className='min-h-full h-full px-4 mt-6'>
         <Heading size={'lg'} className='text-primaryGreen'>
           Activity
@@ -28,6 +28,6 @@ export default function DashBoard() {
           </Text>
         </Flex>
       </Box>
-    </DashBoardLayout>
+    </NutritionistDashBoardLayout>
   );
 }

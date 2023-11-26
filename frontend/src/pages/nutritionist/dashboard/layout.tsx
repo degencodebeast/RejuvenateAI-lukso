@@ -3,7 +3,7 @@ import DashBoardHeader from '@/components/dashboard-header';
 import DashboardSideBar from '@/components/dashboard-sidebar';
 import { ReactNode } from 'react';
 
-export default function DashBoardLayout({ children }: { children: ReactNode }) {
+export default function NutritionistDashBoardLayout({ children }: { children: ReactNode }) {
   const navLinks = [
     { url: 'overview', title: 'Overview', icon: 'dashboard' },
     { url: 'meal-plans', title: 'Meal Plans', icon: 'fastfood' },

@@ -5,9 +5,10 @@ import { Link } from '@chakra-ui/next-js';
 import RejuvenateAi from '../../images/svg/rejuvenate-logo.svg';
 import { DataContext } from '../../context/state';
 import RegisterForm from '../register-form';
-import { Button, useDisclosure } from '@chakra-ui/react';
 import { useConnectWallet } from '@web3-onboard/react';
 import { ethers } from 'ethers';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { Button, HStack, Text, useDisclosure } from '@chakra-ui/react';
 
 const Header = ({ bg = 'transparent' }: { bg?: string }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,8 +27,14 @@ const Header = ({ bg = 'transparent' }: { bg?: string }) => {
   // const { isConnected } = useAccount();
   // const { openConnectModal } = useConnectModal();
 
-  const openConnectModal = () => {};
+  // const openConnectModal = () => {};
   console.log(wallet);
+  // const { setAddress } = useAppContext();
+  const { openConnectModal } = useConnectModal();
+
+  // useEffect(() => {
+  //   setAddress(`${address}`);
+  // }, [address, setAddress]);
 
   return (
     <>
@@ -40,15 +47,35 @@ const Header = ({ bg = 'transparent' }: { bg?: string }) => {
           </Link>
         </div>
 
+        <HStack spacing={4}>
+          <Text as={Link} href={'/'} fontWeight={'medium'}>
+            Home
+          </Text>
+          <Text as={Link} href={'/blog'} fontWeight={'medium'}>
+            Blog
+          </Text>
+        </HStack>
         {wallet && (
-          <>
-            <Button onClick={() => onOpen()}>Register</Button>
-          </>
+          <HStack spacing={4}>
+            <Button
+              colorScheme='primaryColor'
+              variant={'outline'}
+              onClick={() => onOpen()}
+            >
+              Login
+            </Button>
+            <Button
+              colorScheme='primaryColor'
+              variant={'solid'}
+              onClick={() => onOpen()}
+            >
+              Register
+            </Button>
+          </HStack>
         )}
         {!wallet && (
           <Button
             size={'lg'}
-            disabled={connecting}
             onClick={() => (wallet ? disconnect(wallet) : connect())}
           >
             {connecting ? 'Connecting' : wallet ? 'Disconnect' : 'Connect'}
