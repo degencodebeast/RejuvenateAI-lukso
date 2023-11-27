@@ -2,19 +2,14 @@
 
 pragma solidity 0.8.17;
 
-import "./ISBT.sol";
+import {ILSP8Mintable} from "@lukso/lsp-smart-contracts/contracts/LSP8IdentifiableDigitalAsset/presets/ILSP8Mintable.sol";
 
-/**
- * @title IERC4671
- * @dev Interface implementation for {https://eips.ethereum.org/EIPS/eip-4671}
- */
-interface INutritionistNFT is ISBT {
-    
-    event MintNutritionistNFT(address nutritionist);
+interface INutritionistNFT is ILSP8Mintable {
 
-    event BurnNutritionistNFT(address member, uint256 tokenId);
+  event MintUserNFT(address member);
 
-    function mint(address nutritionist, string memory uri) external;
+  event BurnUserNFT(address member, uint256 tokenId);
 
-    function burn(address nutritionist, uint256 _tokenId) external;
+  function burn(bytes32 tokenId, bytes memory data) external;
+
 }

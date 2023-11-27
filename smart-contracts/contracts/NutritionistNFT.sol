@@ -1,96 +1,30 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity 0.8.17;
 
-import "./interfaces/INutritionistNFT.sol";
-import {SBT} from "./SBT.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import {LSP8Mintable} from "@lukso/lsp-smart-contracts/contracts/LSP8IdentifiableDigitalAsset/presets/LSP8Mintable.sol";
+import {LSP8Burnable} from "@lukso/lsp-smart-contracts/contracts/LSP8IdentifiableDigitalAsset/extensions/LSP8Burnable.sol";
 
-contract NutritionistNFT is INutritionistNFT, SBT {
-    using Strings for uint256;
+import {_LSP8_TOKENID_TYPE_NUMBER} from "@lukso/lsp-smart-contracts/contracts/LSP8IdentifiableDigitalAsset/LSP8Constants.sol";
 
-    using Counters for Counters.Counter;
+import {_LSP4_TOKEN_TYPE_DATA_KEY, TokenType} from "./utils/TokenTypes.sol";
 
-    // Optional mapping for token URIs
-    mapping(uint256 => string) private _tokenURIs;
-
-    Counters.Counter private tokenUriIds;
-
-    address public owner;
-
+contract NutritionistNFT is LSP8Mintable, LSP8Burnable {
     constructor(
-        string memory name,
-        string memory symbol,
-        address _owner
-    ) SBT(name, symbol) {
-        owner = _owner;
-    }
+        string memory nftCollectionName,
+        string memory nftCollectionSymbol,
+        address contractOwner,
+        bytes memory _LSP4MetadataJSONURL
+    )
+        LSP8Mintable(
+            nftCollectionName,
+            nftCollectionSymbol,
+            contractOwner,
+            _LSP8_TOKENID_TYPE_NUMBER
+        )
+    {
+        // set the token type
+        _setData(_LSP4_TOKEN_TYPE_DATA_KEY, abi.encode(TokenType.COLLECTION));
 
-    // FUNCTIONS
-    function mint(address nutritionist, string memory uri) external override {
-        require(msg.sender == owner, "caller not owner");
-        _mintUsingAutomaticTokenId(nutritionist);
-        tokenUriIds.increment();
-        uint256 tokenUriId = tokenUriIds.current();
-
-        _setTokenURI(tokenUriId, uri);
-
-        emit MintNutritionistNFT(nutritionist);
-    }
-
-    function burn(address nutritionist, uint256 _tokenId) external override {
-        require(msg.sender == owner, "caller not owner");
-        _burn(nutritionist, _tokenId);
-
-        if (bytes(_tokenURIs[_tokenId]).length != 0) {
-            delete _tokenURIs[_tokenId];
-        }
-        emit BurnNutritionistNFT(nutritionist, _tokenId);
-    }
-
-    /**
-     * @dev See {IERC721Metadata-tokenURI}.
-     */
-    function tokenURI(
-        uint256 tokenId
-    ) public view virtual override returns (string memory) {
-        _requireMinted(tokenId);
-
-        string memory _tokenURI = _tokenURIs[tokenId];
-        string memory base = _baseURI();
-
-        // If there is no base URI, return the token URI.
-        if (bytes(base).length == 0) {
-            return _tokenURI;
-        }
-        // If both are set, concatenate the baseURI and tokenURI (via abi.encodePacked).
-        if (bytes(_tokenURI).length > 0) {
-            return string(abi.encodePacked(base, _tokenURI));
-        }
-
-        return super.tokenURI(tokenId);
-    }
-
-    /**
-     * @dev Sets `_tokenURI` as the tokenURI of `tokenId`.
-     *
-     * Requirements:
-     *
-     * - `tokenId` must exist.
-     */
-    function _setTokenURI(
-        uint256 tokenId,
-        string memory _tokenURI
-    ) internal virtual {
-        require(
-            _exists(tokenId),
-            "ERC721URIStorage: URI set of nonexistent token"
-        );
-        _tokenURIs[tokenId] = _tokenURI;
+        _setData(_LSP4_METADATA_KEY, _LSP4MetadataJSONURL);
     }
 }
-
-
-
