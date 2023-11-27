@@ -15,6 +15,7 @@ const INFURA_KEY = '2996ff3d1a1142689324a8341cb75c68';
 const injected = injectedModule({
   custom: [
     // include custom injected wallet modules here
+    //@ts-ignore
     lukso,
   ],
   sort: (wallets) => {
