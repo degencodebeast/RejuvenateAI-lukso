@@ -59,12 +59,13 @@ function useLightHouse() {
        - uploadProgressCallback: function to get progress (optional)
     */
       const sig = await encryptionSignature();
+      //@ts-ignore
       const response = await lighthouse.uploadEncrypted(
         file,
         'YOUR_API_KEY',
         sig?.publicKey as string,
         sig?.signedMessage as string,
-
+        undefined,
         progressCallback
       );
       console.log(response.data);
