@@ -3,23 +3,38 @@
 import { useEffect, useState } from 'react';
 import { Link } from '@chakra-ui/next-js';
 import RejuvenateAi from '../../images/svg/rejuvenate-logo.svg';
-import { useAppContext } from '@/context/state';
+import { DataContext } from '../../context/state';
 import RegisterForm from '../register-form';
-import { useAccount } from 'wagmi';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useConnectWallet } from '@web3-onboard/react';
+import { ethers } from 'ethers';
+// import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { Button, HStack, Text, useDisclosure } from '@chakra-ui/react';
 
 const Header = ({ bg = 'transparent' }: { bg?: string }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { setAddress } = useAppContext();
-  const { address } = useAccount();
-  const { isConnected } = useAccount();
-  const { openConnectModal } = useConnectModal();
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
-  useEffect(() => {
-    setAddress(`${address}`);
-  }, [address, setAddress]);
+  // create an ethers provider
+  let ethersProvider;
+
+  if (wallet) {
+    ethersProvider = new ethers.providers.Web3Provider(wallet.provider, 'any');
+  }
+
+  //const { address } = useAccount();
+  const address = '';
+  // const { isConnected } = useAccount();
+  // const { openConnectModal } = useConnectModal();
+
+  // const openConnectModal = () => {};
+  console.log(wallet);
+  // const { setAddress } = useAppContext();
+  // const { openConnectModal } = useConnectModal();
+
+  // useEffect(() => {
+  //   setAddress(`${address}`);
+  // }, [address, setAddress]);
 
   return (
     <>
@@ -31,15 +46,16 @@ const Header = ({ bg = 'transparent' }: { bg?: string }) => {
             <RejuvenateAi />
           </Link>
         </div>
-        <HStack spacing={4}>
+
+        {/* <HStack spacing={4}>
           <Text as={Link} href={'/'} fontWeight={'medium'}>
             Home
           </Text>
           <Text as={Link} href={'/blog'} fontWeight={'medium'}>
             Blog
           </Text>
-        </HStack>
-        {address && (
+        </HStack> */}
+        {wallet && (
           <HStack spacing={4}>
             <Button
               colorScheme='primaryColor'
@@ -57,9 +73,12 @@ const Header = ({ bg = 'transparent' }: { bg?: string }) => {
             </Button>
           </HStack>
         )}
-        {!address && (
-          <Button size={'lg'} onClick={openConnectModal}>
-            Connect Wallet
+        {!wallet && (
+          <Button
+            size={'lg'}
+            onClick={() => (wallet ? disconnect(wallet) : connect())}
+          >
+            {connecting ? 'Connecting' : wallet ? 'Disconnect' : 'Connect'}
           </Button>
         )}
         {/* <ConnectKitButton /> */}
