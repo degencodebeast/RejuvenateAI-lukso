@@ -49,7 +49,7 @@ export default function DashBoard() {
                 <TabPanel>
                   <Box as={'form'} maxW={700} mt={6}>
                     {Object.keys(basicInfo).map((key, i) => (
-                      <Stack mb={4}>
+                      <Stack mb={4} key={key}>
                         <label htmlFor={'basic' + key}>
                           {convertCamelCaseToSpaceSeparated(key)}
                         </label>

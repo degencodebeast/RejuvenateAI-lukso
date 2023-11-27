@@ -13,7 +13,7 @@ export default function DashBoardLayout({ children }: { children: ReactNode }) {
   ];
   return (
     <div className='flex max-w-[1350px] mx-auto my-0 h-[100vh] max-h-[750px] min-h-[700px] bg-primaryBeige'>
-      <DashboardSideBar links={navLinks} entryPath='/member/dashboard' />
+      <DashboardSideBar links={navLinks} entryPath='/member/dashboard/' />
       <div className=' flex-1'>
         <DashBoardHeader />
 
