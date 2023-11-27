@@ -29,26 +29,26 @@ contract UserNFT is IUserNFT, SBT {
     }
 
     // FUNCTIONS
-    function mint(address nutritionist, string memory uri) external override {
+    function mint(address user, string memory uri) external override {
         require(msg.sender == owner, "caller not owner");
-        _mintUsingAutomaticTokenId(nutritionist);
+        _mintUsingAutomaticTokenId(user);
         tokenUriIds.increment();
         uint256 tokenUriId = tokenUriIds.current();
 
         _setTokenURI(tokenUriId, uri);
 
-        emit MintUserNFT(nutritionist);
+        emit MintUserNFT(user);
     }
 
-    function burn(address nutritionist, uint256 _tokenId) external override {
+    function burn(address user, uint256 _tokenId) external override {
         require(msg.sender == owner, "caller not owner");
-        _burn(nutritionist, _tokenId);
+        _burn(user, _tokenId);
 
         if (bytes(_tokenURIs[_tokenId]).length != 0) {
             delete _tokenURIs[_tokenId];
         }
 
-        emit BurnUserNFT(nutritionist, _tokenId);
+        emit BurnUserNFT(user, _tokenId);
     }
 
     /**

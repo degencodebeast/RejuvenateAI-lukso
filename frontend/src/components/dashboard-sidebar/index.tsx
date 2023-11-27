@@ -16,8 +16,8 @@ export default function DashboardSideBar(props: {
       lastPart === link?.url ||
       (link?.url === 'overview' && lastPart === 'dashboard');
     // console.log({pathname,lastPart,isActive});
-    const buildLink = (prefix: string, lnk: string) =>
-      lnk.toLowerCase() === 'overview' ? prefix + '/' : prefix + lnk;
+    const buildLink = (entry: string, lnk: string) =>
+      lnk.toLowerCase() === 'overview' ? entry + '' : entry + lnk;
 
     return (
       <ListItem
@@ -30,11 +30,12 @@ export default function DashboardSideBar(props: {
         }`}
       >
         <Link
-          href={buildLink(props?.entryPath + '/', link?.url)}
+          textDecor={'none!important'}
+          href={buildLink(props?.entryPath as string, link?.url)}
           alignItems={'center'}
           className='flex gap-[40px]'
         >
-          {/* <Icon name={link?.icon} /> */}
+          <Icon name={link?.icon} />
           <span>{link?.title}</span>
         </Link>
       </ListItem>

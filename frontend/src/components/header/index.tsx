@@ -3,54 +3,88 @@
 import { useEffect, useState } from 'react';
 import { Link } from '@chakra-ui/next-js';
 import RejuvenateAi from '../../images/svg/rejuvenate-logo.svg';
-import { useAppContext } from '@/context/state';
+// import { DataContext } from '../../context/state';
 import RegisterForm from '../register-form';
+import { useConnectWallet } from '@web3-onboard/react';
+import { ethers } from 'ethers';
+// import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { Button, HStack, Text, useDisclosure } from '@chakra-ui/react';
 
 const Header = ({ bg = 'transparent' }: { bg?: string }) => {
-  const { setAddress } = useAppContext();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+
+  // create an ethers provider
+  let ethersProvider;
+
+  if (wallet) {
+    ethersProvider = new ethers.providers.Web3Provider(wallet.provider, 'any');
+  }
+
   //const { address } = useAccount();
-  const address = "";
+  const address = '';
   // const { isConnected } = useAccount();
   // const { openConnectModal } = useConnectModal();
 
-  useEffect(() => {
-    setAddress(`${address}`);
-  }, [address, setAddress]);
+  // const openConnectModal = () => {};
+  console.log(wallet);
+  // const { setAddress } = useAppContext();
+  // const { openConnectModal } = useConnectModal();
+
+  // useEffect(() => {
+  //   setAddress(`${address}`);
+  // }, [address, setAddress]);
 
   return (
-    <section
-      className={`bg-${bg} px-2 max-w-[1300px] w-full py-1 flex justify-between items-center mx-auto`}
-    >
-      <div>
-        <Link href={'/'} textDecor={'none'}>
-          <RejuvenateAi />
-        </Link>
-      </div>
-      <>
-        {address ? (
-          <>
-            <label
-              className='btn bg-[#014421] h-[48px] px-5 lg:h-[50px] font-bold text-base lg:text-[20px] text-[#F5F5DC] rounded-xl'
-              htmlFor='modal-1'
+    <>
+      <header
+        className={`bg-${bg} px-2 pr-4 max-w-[1300px] w-full py-1 flex justify-between items-center mx-auto`}
+      >
+        <div>
+          <Link href={'/'} textDecor={'none'}>
+            <RejuvenateAi />
+          </Link>
+        </div>
+
+        {/* <HStack spacing={4}>
+          <Text as={Link} href={'/'} fontWeight={'medium'}>
+            Home
+          </Text>
+          <Text as={Link} href={'/blog'} fontWeight={'medium'}>
+            Blog
+          </Text>
+        </HStack> */}
+        {wallet && (
+          <HStack spacing={4}>
+            <Button
+              colorScheme='primaryColor'
+              variant={'outline'}
+              onClick={() => onOpen()}
             >
-              {' '}
+              Login
+            </Button>
+            <Button
+              colorScheme='primaryColor'
+              variant={'solid'}
+              onClick={() => onOpen()}
+            >
               Register
-            </label>
-            <input className='modal-state' id='modal-1' type='checkbox' />
-          </>
-        ) : (
-          <button
-            type='submit'
-            // onClick={openConnectModal}
-            className='btn w-full max-w-[200px] flex items-center justify-center bg-[#014421] h-[48px] px-5 lg:h-[50px] font-bold text-base lg:text-[20px] text-[#F5F5DC] rounded-xl'
-          >
-            Connect Wallet
-          </button>
-          //<ConnectKitButton />
+            </Button>
+          </HStack>
         )}
-      </>
-      <RegisterForm />
-    </section>
+        {!wallet && (
+          <Button
+            size={'lg'}
+            onClick={() => (wallet ? disconnect(wallet) : connect())}
+          >
+            {connecting ? 'Connecting' : wallet ? 'Disconnect' : 'Connect'}
+          </Button>
+        )}
+        {/* <ConnectKitButton /> */}
+      </header>
+      <RegisterForm isOpen={isOpen} onClose={onClose} />
+    </>
   );
 };
 

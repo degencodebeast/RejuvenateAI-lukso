@@ -16,9 +16,12 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import DashBoardLayout from '../layout';
 export default function DashBoard() {
   const today = new Date().getTime();
   return (
+    <DashBoardLayout>
+
     <Box className='min-h-full h-full px-4 mt-6'>
       <Flex align={'center'} justify={'space-between'}>
         <Flex align={'center'} gap={6}>
@@ -81,7 +84,7 @@ export default function DashBoard() {
                     variant={'outline'}
                     rounded={'full'}
                     className='text-primaryGreen border-primaryGreen'
-                  >
+                    >
                     View Details
                   </Button>
                 </Flex>
@@ -91,5 +94,6 @@ export default function DashBoard() {
         </Table>
       </TableContainer>
     </Box>
+                    </DashBoardLayout>
   );
 }
