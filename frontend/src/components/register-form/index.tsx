@@ -35,6 +35,7 @@ const RegisterForm = ({
   onClose: () => void;
 }) => {
   //const auth = useAuth()
+  const router=useRouter()
   const swiperRef = useRef<SwiperRef>();
   const swiperNestedRef = useRef<SwiperRef>();
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -70,7 +71,7 @@ const RegisterForm = ({
     }
     //    const cid = await uploadPromptToIpfs(data);
     if (isValid) {
-      // router.push('/member/dashboard');
+      router.push('/member/dashboard');
     }
   };
   //   const onInvalidSubmit = (errors:any,event:BaseSyntheticEvent) => {
