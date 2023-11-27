@@ -22,6 +22,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import {useRouter} from 'next/router'
 import { useEffect, useState } from 'react';
 import BoringAvatar from 'boring-avatars';
 //@ts-ignore
@@ -68,6 +69,7 @@ export default function NutritionistPage() {
     status: 'success',
     title: 'Your appointment was booked successfully',
   });
+  const router=useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
     null
@@ -75,6 +77,7 @@ export default function NutritionistPage() {
 
   const handleJoin = (community: Community) => {
     setSelectedCommunity(community);
+    router.push('/community/'+community?.slug)
   };
 
   return (
