@@ -30,8 +30,10 @@ export async function checkMinimalBalance() {
   let accounts = await web3.eth.getAccounts();
 
   // Get the account balance and check if it is above 0.25 LYXt
+
+  const balanceInEther = parseFloat(web3.utils.fromWei(await web3.eth.getBalance(accounts[0]), 'ether'));
   if (
-    web3.utils.fromWei(await web3.eth.getBalance(accounts[0]), 'ether') < 0.25
+    balanceInEther < 0.25
   ) {
     return false
   }
