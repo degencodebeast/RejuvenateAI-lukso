@@ -40,7 +40,7 @@ const WorkWithUs = () => {
               Join us
             </label>
             <input className='modal-state' id='modal-3' type='checkbox' />
-            <NutritionistForm />
+            <NutritionistForm showModal={true} />
           </>
         </div>
       </section>
