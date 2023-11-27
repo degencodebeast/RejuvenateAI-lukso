@@ -119,7 +119,7 @@ export default function CommunityViewPage() {
       {
         timestamp: new Date().getTime(),
         content: messageToSend,
-        userAddress: maskHexAddress(address as string),
+        userAddress:address? maskHexAddress(address as string):'0x456****8bc45',
         id: randomID(),
         fullname: 'Lucky Victory',
       },
