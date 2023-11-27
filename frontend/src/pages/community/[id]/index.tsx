@@ -23,7 +23,7 @@ import BoringAvatars from 'boring-avatars';
 import { KeyboardEvent, useState } from 'react';
 import { MdChat, MdEvent, MdViewAgenda } from 'react-icons/md';
 import { formatChatTimestamp, maskHexAddress } from '@/helpers/prompt';
-import { useAccount } from 'wagmi';
+//import { useAccount } from 'wagmi';
 // import { randomUUID } from 'crypto';
 
 type ChatMessages = {
@@ -35,7 +35,8 @@ type ChatMessages = {
 };
 export default function CommunityViewPage() {
   const [messageToSend, setMessageToSend] = useState('');
-  const { address } = useAccount();
+  //const { address } = useAccount();
+  const address = "0x456****8bc45"
   const community: Community & { messages: Array<ChatMessages> } = {
     name: 'All for good',
     id: 1,
