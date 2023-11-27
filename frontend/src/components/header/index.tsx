@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from '@chakra-ui/next-js';
 import RejuvenateAi from '../../images/svg/rejuvenate-logo.svg';
-import { DataContext } from '../../context/state';
+// import { DataContext } from '../../context/state';
 import RegisterForm from '../register-form';
 import { useConnectWallet } from '@web3-onboard/react';
 import { ethers } from 'ethers';
