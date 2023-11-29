@@ -1,6 +1,8 @@
 import { Web3Storage } from 'web3.storage';
 import fs, {ReadStream} from 'fs';
 
+require("dotenv").config();
+
 const Moralis = require("moralis").default;
 
 const userNftjson = JSON.stringify({
@@ -34,7 +36,7 @@ const nutritionistNftjson = JSON.stringify({
 })
 
 
-const _apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjY4NGY3MzJhLWFmMzEtNDRhNi05ZGZjLTkzNGY2ZjkwZjA4YiIsIm9yZ0lkIjoiMzY2MjEzIiwidXNlcklkIjoiMzc2MzcwIiwidHlwZUlkIjoiODQ1NDllYWYtOTgzZC00NGU5LWJmOWQtYmRmMTMzMzJkN2I3IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3MDEyMTc0MjksImV4cCI6NDg1Njk3NzQyOX0.9eoubuYnF7aw4cMjxeftv0DoMZTKzk0BHT-dAlrL7V0"
+const _apiKey = process.env.MORALIS_KEY as string;
 
 
 async function uploadToIpfs() {
