@@ -3,16 +3,6 @@ import fs, {ReadStream} from 'fs';
 
 const Moralis = require("moralis").default;
 
-
-interface Filelike {
-    name: string;
-    stream: ReadStream;
-  }
-  
-function getAccessToken() {
-    return process.env.NEXT_PUBLIC_WEB3STORAGE_API_TOKEN;
-  }
-
 const userNftjson = JSON.stringify({
     "LSP4Metadata": {
         "description": "User NFT for RejuvenateAI",
