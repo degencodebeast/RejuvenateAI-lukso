@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.17;
+pragma solidity ^0.8.4;
+
 
 import {IERC165} from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import {ERC165} from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
@@ -21,7 +22,7 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
     bytes32 public mealPlansArrayKey;
     bytes32 public fitnessPlansArrayKey;
     bytes32 public consultationsArrayKey;
-    bytes public articlesArrayKey;
+    bytes32 public articlesArrayKey;
     NutritionistApplicationStatus public applicationStatus;
 
     /**
@@ -32,13 +33,11 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
     constructor(
         address _owner,
         address _user,
-        string memory _nutritionistData,
-        NutritionistApplicationStatus _applicationStatus
-    ) ERC725Y(_owner) {
+        string memory _nutritionistData
+    ) payable ERC725Y(_owner) {
         user = _user;
         timestamp = block.timestamp;
         uint256 count = 0;
-        applicationStatus = _applicationStatus;
 
         // NOTE cannot take back the name
         string memory mealPlansArrayName = string(
@@ -81,7 +80,6 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
             "NutritionistPersonalData"
         );
         setData(nutritionistPersonalDataKey, abi.encode(_nutritionistData));
-
     }
 
     enum NutritionistApplicationStatus {
@@ -122,7 +120,7 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
     ) external onlyOwner {
         MealPlans memory mealPlan = MealPlans(_mealName, mealPlanDesc, user);
         bytes memory encodedMealStruct = abi.encode(mealPlan);
-        uint256 mealPlanIndex = uint256(bytes32(_getData(mealPlansArrayKey)));
+        uint128 mealPlanIndex = uint128(uint256(bytes32(_getData(mealPlansArrayKey))));
         bytes32 key = LSP2Utils.generateArrayElementKeyAtIndex(
             mealPlansArrayKey,
             mealPlanIndex
@@ -138,7 +136,7 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
     }
 
     function getMealPlan(
-        uint256 mealPlanIndex
+        uint128 mealPlanIndex
     ) public view returns (MealPlans memory) {
         bytes32 key = LSP2Utils.generateArrayElementKeyAtIndex(
             mealPlansArrayKey,
@@ -162,9 +160,9 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
             user
         );
         bytes memory encodedFitnessStruct = abi.encode(fitnessPlan);
-        uint256 fitnessPlanIndex = uint256(
-            bytes32(_getData(fitnessPlansArrayKey))
-        );
+        uint128 fitnessPlanIndex = uint128(
+            uint256(bytes32(_getData(fitnessPlansArrayKey))
+        ));
         bytes32 key = LSP2Utils.generateArrayElementKeyAtIndex(
             fitnessPlansArrayKey,
             fitnessPlanIndex
@@ -183,7 +181,7 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
     }
 
     function getFitnessPlan(
-        uint256 fitnessPlanIndex
+        uint128 fitnessPlanIndex
     ) public view returns (FitnessPlans memory) {
         bytes32 key = LSP2Utils.generateArrayElementKeyAtIndex(
             mealPlansArrayKey,
@@ -203,8 +201,8 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
         string memory _content
     ) external onlyOwner {
         Articles memory article = Articles(_title, user, _authorName, _content);
-        bytes memory encodedArticleStruct = abi.encode(fitnessPlan);
-        uint256 articleIndex = uint256(bytes32(_getData(articlesArrayKey)));
+        bytes memory encodedArticleStruct = abi.encode(article);
+        uint128 articleIndex = uint128(uint256(bytes32(_getData(articlesArrayKey))));
         bytes32 key = LSP2Utils.generateArrayElementKeyAtIndex(
             articlesArrayKey,
             articleIndex
@@ -220,7 +218,7 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
     }
 
     function getArticle(
-        uint256 articleIndex
+        uint128 articleIndex
     ) public view returns (Articles memory) {
         bytes32 key = LSP2Utils.generateArrayElementKeyAtIndex(
             articlesArrayKey,
@@ -241,9 +239,9 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
         bytes memory encodedConsultationStruct = abi.encode(
             consultationService
         );
-        uint256 consultationIndex = uint256(
-            bytes32(_getData(consultationsArrayKey))
-        );
+        uint128 consultationIndex = uint128(
+            uint256(bytes32(_getData(consultationsArrayKey))
+        ));
         bytes32 key = LSP2Utils.generateArrayElementKeyAtIndex(
             consultationsArrayKey,
             consultationIndex
@@ -262,7 +260,7 @@ contract NutritionistProfileData is INutritionistProfileData, ERC725Y {
     }
 
     function getConsultation(
-        uint256 consultationIndex
+        uint128 consultationIndex
     ) public view returns (ConsultationServices memory) {
         bytes32 key = LSP2Utils.generateArrayElementKeyAtIndex(
             consultationsArrayKey,

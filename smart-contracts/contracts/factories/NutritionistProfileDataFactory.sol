@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.4;
 
 import {NutritionistProfileData} from "../NutritionistProfileData.sol";
 
-library NutritionistProfileDataFatory {
+library NutritionistProfileDataFactory {
+
     /**
      * @notice Creates a new social network profile data contract instance
      * @param _owner The owner of the CommunityNetwork contract instance
@@ -17,7 +18,11 @@ library NutritionistProfileDataFatory {
     ) public returns (address) {
         return
             address(
-                new NutritionistProfileData(_owner, _nutritionist, _userData)
+                new NutritionistProfileData(
+                    _owner,
+                    _nutritionist,
+                    _nutritionistData
+                )
             );
     }
 }

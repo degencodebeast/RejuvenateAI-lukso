@@ -1,8 +1,15 @@
-Deploying treasury for Aurora
----- Treasury Contract was deployed to: ----  0xff4c759b5e2D4923Dde13071dc5677A02B6a8EC3
-Deploying Community contract for Aurora
----- Community Contract for Aurora was deployed to aurora testnet at this address: ----  0x6083A218DF607c21CdD9677eB247286CA73d146C
-Deploying UserNFT for Aurora....
----- UserNFT Contract was deployed to: ----  0xCA836dA8ED627C21226e3B59a3a4F1942B2D1Cc2
-Deploying NutritionistNFT for Aurora....
----- NutritionistNFT Contract was deployed to: ----  0x6e2C11794C29e544AF675e1C0AEcF48Ed299d821
+
+Start deploying Treasury
+Successfully deployed deployedTreasury:  0x192F0e1D589bEB01b5FFEF701a0a5B7049FFFa34
+Start deploying UserProfileDataFactory
+Successfully deployed UserProfileDataFactory:  0x02102814d4eE4e509b2831B853a11ed33Fb9FB0C
+Start deploying NutritionistProfileDataFactory
+Successfully deployed NutritionistProfileDataFactory:  0xb85bE71Ae2073Aa791DdF406dbFa337346Def774
+Start deploying CommunityNetwork
+Successfully deployed CommunityNetwork:  0xb5c93ACAc8d4499293e81Fb07298c29d1DA4a455
+Account 0x47626Ea0faD2614f37445f7BAcB8A64963F7D2d4 - UniversalProfile 0xbC359DC7c2599ebb9968bdB9dDECe53493172Ccd
+
+---- UserNFT Contract was deployed to: ----  0x88cF82a3EfE628B35e5eca8817681f94F5ed15Df
+Deploying NutritionistNFT for Lukso....
+Start deploying nutritionistNFT
+---- nutritionistNFT Contract was deployed to: ----  0x628ff8D815a6e3Eb6Fe84BfeC3c47692729ba3F3

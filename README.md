@@ -1,7 +1,7 @@
 # RejuvenateAI x Lukso hack 
 
-Live Demo - [Loom video](https://www.loom.com/share/5a032880b54a422db23ef9edde0b9fdb) <br />
-Live Link - [RejuvenateAI dapp](https://rejuvenate-ai-czgn.vercel.app/) <br />
+Live Demo - [Youtube video](https://youtu.be/G7vAsMd6zR0) <br />
+Live Link - [RejuvenateAI dapp](https://rejuvenate-ai-lukso-two.vercel.app/) <br />
 
 ## ✨ Description
 
@@ -18,13 +18,15 @@ Our features empower personal healthy living habits by:
 - Allowing users to setup meetings with nutritionists who would offer professional consultation to them.
 - Providing educative articles that can inspire users to live healthier lives. 
 - Providing educative meal and fitness plans that paid subscribers have access to.
+- Users can interact with each other in our communities and work on health goals/challenges together.
+- Users can set up in real life events in communities and meet up and do healthy activities together like long walks, marathons etc.
 
 ## 💻 How we built RejuvenateAI
 
 Here's a breakdown of how it was built:
 
 
-1. Users can sign up with the ```joinCommunity``` function, which they will pay the subscription fee and then get onboarded into our platform to enjoy our services
+1. Users can sign up with the ```register``` function, which they will pay the subscription fee and then get onboarded into our platform to enjoy our services
 
 2. Nutritionists can sign up with the ```applyForNutritionistRole``` function, which they will pass their credentials into and have their application status set to pending.
 
@@ -39,12 +41,12 @@ We created and deployed our smart contracts on the Lukso testnet chain.
 
 ### Lukso Testnet
 
-1. Community contract 0x3a65168B746766066288B83417329a7F901b5569 - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/Community.sol) | [View on lukso](https://goerli.arbiscan.io/address/0x3a65168B746766066288B83417329a7F901b5569)
+1. CommunityNetwork contract 0xb5c93ACAc8d4499293e81Fb07298c29d1DA4a455 - [View source code](https://github.com/degencodebeast/RejuvenateAI-lukso/blob/main/smart-contracts/contracts/CommunityNetwork.sol) | [View on lukso](https://explorer.execution.testnet.lukso.network/address/0xb5c93ACAc8d4499293e81Fb07298c29d1DA4a455)
 
-2. Treasury contract 0x9E1eF5A92C9Bf97460Cd00C0105979153EA45b27 - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/Treasury.sol) | [View on lukso](https://goerli.arbiscan.io/address/0x9E1eF5A92C9Bf97460Cd00C0105979153EA45b27)
+2. Treasury contract 0x192F0e1D589bEB01b5FFEF701a0a5B7049FFFa34 - [View source code](https://github.com/degencodebeast/RejuvenateAI-lukso/blob/main/smart-contracts/contracts/Treasury.sol) | [View on lukso](https://explorer.execution.testnet.lukso.network/address/0x192F0e1D589bEB01b5FFEF701a0a5B7049FFFa34)
 
-3. User NFT contract 0x6D919b8dC30BEf41b56Aa8b18b2052c9459F8E9A - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/UserNFT.sol) | [View on lukso](https://goerli.arbiscan.io/address/0x6D919b8dC30BEf41b56Aa8b18b2052c9459F8E9A)
+3. User NFT contract 0x88cF82a3EfE628B35e5eca8817681f94F5ed15Df - [View source code](https://github.com/degencodebeast/RejuvenateAI-lukso/blob/main/smart-contracts/contracts/UserNFT.sol) | [View on lukso](https://explorer.execution.testnet.lukso.network/address/0x88cF82a3EfE628B35e5eca8817681f94F5ed15Df)
 
-4. Nutritionist NFT contract 0xA39d26482B5c226Fd02A5f3e159C72ee03d63Fc0 - [View source code](https://github.com/WEB3ATL/smart-contracts/blob/main/contracts/NutritionistNFT.sol) | [View on lukso](https://goerli.arbiscan.io/address/0xA39d26482B5c226Fd02A5f3e159C72ee03d63Fc0)
+4. Nutritionist NFT contract 0x628ff8D815a6e3Eb6Fe84BfeC3c47692729ba3F3 - [View source code](https://github.com/degencodebeast/RejuvenateAI-lukso/blob/main/smart-contracts/contracts/NutritionistNFT.sol) | [View on lukso](https://explorer.execution.testnet.lukso.network/address/0x628ff8D815a6e3Eb6Fe84BfeC3c47692729ba3F3)
 
 

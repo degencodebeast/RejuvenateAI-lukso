@@ -1,43 +1,45 @@
-// import { HardhatUserConfig, task } from "hardhat/config";
-// import "@nomicfoundation/hardhat-toolbox";
-
-// task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
-//   const accounts = await hre.ethers.getSigners();
-
-//   for (const account of accounts) {
-//     console.log(account.address);
-//     console.log((await account.getBalance()).toString());
-//   }
-// });
-
-
-// const config: HardhatUserConfig = {
-//   paths: { tests: "tests" },
-//   networks: {hardhat: {hardfork: "merge"}},
-//   solidity: {
-//       version: "0.8.18",
-//       settings: {
-//         optimizer: {
-//           enabled: false,
-//           runs: 0,
-//         },
-//       },
-//     }
-// };
-
-// export default config;
-
-import { HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig, extendEnvironment } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 require('dotenv').config()
 //import "@openzeppelin/hardhat-upgrades"
 import 'hardhat-gas-reporter';
 import 'solidity-coverage';
 import "@nomiclabs/hardhat-etherscan";
-
+import "hardhat-deploy";
+//import "hardhat-contract-sizer";
+//import "@openzeppelin/hardhat-upgrades";
 //import "@nomiclabs/hardhat-ethers";
-
 // const walletPrivateKey =  `${process.env.PRIVATE_KEY}`
+
+// Add Web3Provider to HRE
+// eslint-disable-next-line no-undef
+extendEnvironment(async (hre: any) => {
+  hre.Web3Provider = new hre.ethers.providers.Web3Provider(
+    hre.network.provider
+  );
+});
+
+// Add LSPFactory to HRE
+// eslint-disable-next-line no-undef
+extendEnvironment(async (hre: any) => {
+  const { LSPFactory } = require("@lukso/lsp-factory.js");
+  hre.LSPFactory = LSPFactory;
+
+  // hre.network.provider is an EIP1193-compatible provider.
+  hre.lspFactory = new LSPFactory(hre.Web3Provider, {
+    deployKey: hre.network.config.accounts, // Private key of the account which will deploy smart contracts
+    chainId: hre.network.config.chainId,
+  });
+});
+
+
+// Add ERC725 to HRE
+// eslint-disable-next-line no-undef
+extendEnvironment(async (hre: any) => {
+  const { ERC725 } = require("@erc725/erc725.js");
+  hre.ERC725 = ERC725;
+});
+
 
 const config: HardhatUserConfig = {
   // solidity: "0.8.0",
@@ -48,7 +50,7 @@ const config: HardhatUserConfig = {
       evmVersion: process.env.EVM_VERSION || 'london',
       optimizer: {
         enabled: true,
-        runs: 200,
+        runs: 10000,
         details: {
           peephole: true,
           inliner: true,
@@ -70,6 +72,11 @@ const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {},
+    lukso: {
+      url: "https://rpc.testnet.lukso.network",
+      chainId: 4201,
+      accounts: [`${process.env.PRIVATE_KEY}`],
+    },
     filecoinCalibrationNet: {
       url: "https://filecoin-calibration.chainstacklabs.com/rpc/v1",
       chainId: 314159,
@@ -92,7 +99,7 @@ const config: HardhatUserConfig = {
     },
     arbitrumGoerli: {
       url: "https://goerli-rollup.arbitrum.io/rpc",
-      chainId:421613,
+      chainId: 421613,
       accounts: [`${process.env.PRIVATE_KEY}`],
     },
     aurora: {
@@ -111,6 +118,9 @@ const config: HardhatUserConfig = {
       goerli: "1T7UC6DGWNA36AVHC4IGIRRE1MTGCSKE74" ?? "",
       arbitrumGoerli: "BWEYRFH5RWRPMMDNAG5WVMQGGEWRS754R6" ?? "",
     },
+  },
+  namedAccounts: {
+    deployer: 0
   },
 
 };

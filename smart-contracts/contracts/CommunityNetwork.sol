@@ -8,19 +8,24 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import {IUserNFT} from "./interfaces/IUserNFT.sol";
 import {INutritionistNFT} from "./interfaces/INutritionistNFT.sol";
 import {OwnableUnset} from "@erc725/smart-contracts/contracts/custom/OwnableUnset.sol";
-
+import {_INTERFACEID_ERC725Y, _INTERFACEID_ERC725X} from "@erc725/smart-contracts/contracts/constants.sol";
+import {ERC725YCore} from "@erc725/smart-contracts/contracts/ERC725YCore.sol";
+import {ERC725Y} from "@erc725/smart-contracts/contracts/ERC725Y.sol";
 import {ICommunityNetwork} from "./interfaces/ICommunityNetwork.sol";
-import {UserProfileDataFactory} from "./factories/NutritionistProfileDataFactory.sol";
+import {UserProfileDataFactory} from "./factories/UserProfileDataFactory.sol";
 import {IUserProfileData} from "./interfaces/IUserProfileData.sol";
-import {NutrtitionistProfileDataFactory} from "./factories/NutritionistProfileDataFactory.sol";
+import {NutritionistProfileDataFactory} from "./factories/NutritionistProfileDataFactory.sol";
 import {INutritionistProfileData} from "./interfaces/INutritionistProfileData.sol";
+import {IERC165} from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import {ERC165} from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+import {IERC725Y} from "@erc725/smart-contracts/contracts/interfaces/IERC725Y.sol";
 
-contract CommunityNetwork is ICommunityNetwork, Ownable {
-    
+import "./CommunityNetworkConstants.sol";
+
+contract CommunityNetwork is ERC165, ICommunityNetwork, Ownable {
     using Counters for Counters.Counter;
-
+    //bytes4 constant _INTERFACEID_COMMUNITY_NETWORK = type(ICommunityNetwork).interfaceId;
     Counters.Counter private _applicantIndexCounter;
-    Counters.Counter private _userIndexCounter;
 
     INutritionistNFT public nutritionistNFT;
 
@@ -32,8 +37,6 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
 
     mapping(address => uint256) public applicantToIndex;
 
-    mapping(address => uint256) public userToIndex;
-
     uint256 public constant userApplicationFee = 0.01 ether;
 
     uint256 public constant nutritionistApplicationFee = 0.005 ether;
@@ -42,36 +45,34 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
 
     address public immutable treasury;
 
-    address[] public allUserAddresses;
+    address[] public allUserProfiles;
 
     address[] public allUsersProfileData;
 
-    address[] public allNutritionistsAddresses;
+    address[] public allNutritionistsProfiles;
 
-    address[] public allNutritionistsApplicants; //delete from here
+    address[] public allNutritionistsProfileData;
+
+    address[] public allNutritionistsApplicants;
 
     mapping(address => bool) isMember;
 
     mapping(address => bool) isNutritionist;
 
-    //mapping(address => User) users; //update users here
-
-    //mapping(address => Nutritionist) public nutritionists;
-
-    mapping(address => address) public registeredUsers; // mapping from universal profile to social network profile data
+    mapping(address => address) public registeredUsers; // mapping from universal profile to user profile data
     uint public registeredUserCount = 0; // incremented with each registration
 
-    mapping(address => address) public registeredNutritionists; // mapping from universal profile to social network profile data
+    mapping(address => address) public registeredNutritionists; // mapping from universal profile to nutritionist profile data
     uint public registeredNutritionistCount = 0; // incremented with each registration
 
-    mapping(address => NutritionistApplicationStatus) //change to cancelled
+    mapping(address => address) public userProfiles;
+
+    mapping(address => address) public nutritionistProfiles;
+
+    mapping(address => NutritionistApplicationStatus)
         public nutritionistApplicationStatus;
 
-    mapping(address => NutritionistApplication) public nutritionistApplications; //delete from here
-
-    event NewApplication(address applicant, string dataURI);
-
-    event ApplicationApproved(address applicant);
+    mapping(address => NutritionistApplication) public nutritionistApplications;
 
     enum NutritionistApplicationStatus {
         NotApplied,
@@ -130,8 +131,6 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
         UserSubscriptionStatus subStatus;
         uint256 subDeadline;
     }
-
-    //User[] public allUsers; //update users here
 
     struct Nutritionist {
         string nutritionistPersonalData; //needs to be encrypted before storing
@@ -198,8 +197,8 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
 
     modifier deadlinePassed(address _member) {
         address userProfileData = registeredUsers[_member];
-        bytes memory _userData = userProfileData.getData(
-            userProfileData.userDetailsKey()
+        bytes memory _userData = IUserProfileData(userProfileData).getData(
+            IUserProfileData(userProfileData).getUserDetailsKey()
         );
         uint256 deadline = _decodeUserStruct(_userData).subDeadline;
         if (block.timestamp < deadline) {
@@ -208,25 +207,16 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
         _;
     }
 
-    // modifier deadlinePassed(address _member) {
-    //     uint256 deadline = users[_member].subDeadline;
-
-    //     if (block.timestamp < deadline) {
-    //         revert InvalidDeadline();
-    //     }
-    //     _;
-    // }
-
     function _decodeUserStruct(
         bytes memory data
-    ) internal view returns (User memory) {
-        User memory decodedDataStruct = abi.decode(encodedData, (User));
+    ) internal pure returns (User memory) {
+        User memory decodedDataStruct = abi.decode(data, (User));
         return decodedDataStruct;
     }
 
-    function createCommunity() public {}
+    // function createCommunity() public {}
 
-    function joinCommunity(string memory _communityName) public {}
+    // function joinCommunity(string memory _communityName) public {}
 
     function setNFTs(
         address _userNFT,
@@ -235,42 +225,6 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
         userNFT = IUserNFT(_userNFT);
         nutritionistNFT = INutritionistNFT(_nutritionistNFT);
     }
-
-    // function joinCommunityNetwork(
-    //     string memory _userData,
-    //     string memory nftUri
-    // ) external payable {
-    //     // Check that sender isn't a member already
-    //     if (isMember[msg.sender]) {
-    //         revert AlreadyAMember();
-    //     }
-
-    //     if (msg.value < userApplicationFee) {
-    //         revert InsufficientPayment();
-    //     }
-
-    //     uint256 index = _userIndexCounter.current();
-    //     isMember[msg.sender] = true;
-
-    //     //user data
-    //     User memory user = users[msg.sender];
-    //     user.userAddress = msg.sender;
-    //     user.userPersonalData = _userData;
-    //     user.subStatus = UserSubscriptionStatus.Active;
-    //     user.subDeadline = block.timestamp + subscriptionDuration;
-    //     users[msg.sender] = user;
-
-    //     userToIndex[msg.sender] = index;
-    //     allUsers.push(user);
-    //     allUserAddresses.push(msg.sender);
-
-    //     //mint userNft for the user
-    //     userNFT.mint(msg.sender, nftUri);
-    //     payable(treasury).transfer(msg.value);
-
-    //     // Emit event
-    //     emit NewSignUp(msg.sender, _userData);
-    // }
 
     /**
      * @inheritdoc ICommunityNetwork
@@ -305,7 +259,7 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
             revert InsufficientPayment();
         }
 
-        uint256 index = _userIndexCounter.current();
+        //uint256 index = _userIndexCounter.current();
         isMember[msg.sender] = true;
 
         ++registeredUserCount;
@@ -314,13 +268,13 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
                 address(this),
                 msg.sender,
                 _userData,
-                UserSubscriptionStatus.Active,
+                uint8(UserSubscriptionStatus.Active),
                 block.timestamp + subscriptionDuration
             );
 
-        userToIndex[msg.sender] = index;
+        //userToIndex[msg.sender] = index;
         allUsersProfileData.push(registeredUsers[msg.sender]);
-        allUserAddresses.push(msg.sender);
+        allUserProfiles.push(msg.sender);
 
         //mint userNft for the user
         userNFT.mint(msg.sender, bytes32(tokenIdCounter), true, "mint token");
@@ -346,15 +300,12 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
             revert UnauthorizedMember(_member);
         }
 
-        //User memory user = users[_member];
-        //isMember[_member] = false;
-
         IUserProfileData(registeredUsers[_member]).revokeUser();
-        //users[_member] = user;
-        uint256 userIndex = _getUserIndex(_member);
-        allUsers[userIndex] = registeredUsers[_member];
-        uint256 userTokenId = userNFT.tokenIdsOf(user.userAddress);
 
+        bytes32[] memory userTokenIdArr = userNFT.tokenIdsOf(
+            userProfiles[_member]
+        );
+        bytes32 userTokenId = userTokenIdArr[0];
         userNFT.burn(userTokenId, "");
     }
 
@@ -451,60 +402,54 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
     /// @notice Function for community members to approve acceptance of new member to community
     function approveNutritionistRole(
         address applicant
-    ) external onlyOwner applicantExists(applicant) returns(address){
+    ) external onlyOwner applicantExists(applicant) returns (address) {
         // Check that sender isn't a nutritionist already
         if (isNutritionist[applicant]) {
             revert AlreadyANutrionist();
         }
-        
+
         NutritionistApplicationStatus applicationStatus = nutritionistApplicationStatus[
                 applicant
             ];
 
         applicationStatus = NutritionistApplicationStatus.Accepted;
         nutritionistApplicationStatus[applicant] = applicationStatus;
-    
+
         isNutritionist[applicant] = true;
         NutritionistApplication
             memory _nutritionistApplication = nutritionistApplications[
                 applicant
             ];
-        
-        //Nutritionist storage nutritionist = nutritionists[applicant];
+
         ++registeredNutritionistCount;
-         registeredNutritionists[msg.sender] = NutritionistProfileDataFactory
+        registeredNutritionists[msg.sender] = NutritionistProfileDataFactory
             .createNutritionistProfileData(
                 address(this),
-                msg.sender,
-                _nutritionistApplication.dataURI,
-                applicationStatus
-            )
-        
-        allNutritionists.push(registeredNutritionists[msg.sender]);
-        allNutritionistsAddresses.push(applicant);
-          //mint userNft for the nutritionist
-        nutritionistNFT.mint(msg.sender, bytes32(nutritionistTokenIdCounter), true, "mint token");
+                applicant,
+                _nutritionistApplication.dataURI
+            );
+
+        allNutritionistsProfileData.push(registeredNutritionists[applicant]);
+        allNutritionistsProfiles.push(applicant);
+        //mint userNft for the nutritionist
+        nutritionistNFT.mint(
+            msg.sender,
+            bytes32(nutritionistTokenIdCounter),
+            true,
+            "mint token"
+        );
         nutritionistTokenIdCounter++;
-    
+
         // Emit event
         emit ApplicationApproved(applicant);
 
-         return registeredNutritionists[msg.sender];
+        return registeredNutritionists[msg.sender];
     }
 
     function _getApplicantIndex(
         address _applicant
     ) internal view applicantExists(_applicant) returns (uint256 _index) {
         _index = applicantToIndex[_applicant];
-    }
-
-    function _getUserIndex(
-        address _user
-    ) internal view returns (uint256 _index) {
-        if (!isMember[_user]) {
-            revert UnauthorizedMember(_user);
-        }
-        _index = userToIndex[_user];
     }
 
     function rejectNutritionistRole(
@@ -528,18 +473,11 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
         onlyMembers
         deadlinePassed(msg.sender)
     {
-        // User memory user = users[msg.sender];
-        // if (user.subStatus != UserSubscriptionStatus.Expired) {
-        //     revert InvalidSubStatus();
-        // }
-        // user.subStatus = UserSubscriptionStatus.Active;
-        // //isMember[msg.sender] = true;
-        // users[msg.sender] = user;
-         IUserProfileData.renewSubscription();
+        IUserProfileData(msg.sender).renewSubscription();
     }
 
     function getAllMembers() external view returns (address[] memory _users) {
-        _users = allUserAddresses;
+        _users = allUserProfiles;
     }
 
     function getAllNutritionists()
@@ -547,47 +485,35 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
         view
         returns (address[] memory _nutritionists)
     {
-        _nutritionists = allNutritionists;
+        _nutritionists = allNutritionistsProfiles;
     }
 
     function createMealPlan(
         string memory _mealName,
         string memory mealPlanDesc
     ) external onlyNutritionists {
-        // Nutritionist storage _nutritionist = nutritionists[msg.sender];
-        // MealPlans memory mealPlan = MealPlans(
-        //     _mealName,
-        //     mealPlanDesc,
-        //     msg.sender
-        // );
-        // _nutritionist.nutritionistMealplans.push(mealPlan);
-        INutritionistProfileData.createMealPlan(_mealName, mealPlanDesc);
+        INutritionistProfileData(msg.sender).createMealPlan(
+            _mealName,
+            mealPlanDesc
+        );
     }
 
     function createFitnessPlan(
         string memory _fitnessName,
         string memory fitnessDesc
     ) external onlyNutritionists {
-        // Nutritionist storage _nutritionist = nutritionists[msg.sender];
-        // FitnessPlans memory fitnessPlan = FitnessPlans(
-        //     _fitnessName,
-        //     fitnessDesc,
-        //     msg.sender
-        // );
-        // _nutritionist.fitnessPlans.push(fitnessPlan);
-         INutritionistProfileData.createFitnessPlan(_fitnessName, fitnessDesc);
+        INutritionistProfileData(msg.sender).createFitnessPlan(
+            _fitnessName,
+            fitnessDesc
+        );
     }
 
     function createConsultation(
         string memory _consultationDesc
     ) external onlyNutritionists {
-        // Nutritionist storage _nutritionist = nutritionists[msg.sender];
-        // ConsultationServices memory consultationService = ConsultationServices(
-        //     msg.sender,
-        //     _consultationDesc
-        // );
-        // _nutritionist.consultationServices = consultationService;
-         INutritionistProfileData.createConsultation(_consultationDesc);
+        INutritionistProfileData(msg.sender).createConsultation(
+            _consultationDesc
+        );
     }
 
     function publishArticle(
@@ -595,24 +521,16 @@ contract CommunityNetwork is ICommunityNetwork, Ownable {
         string memory _authorName,
         string memory _content
     ) external onlyNutritionists {
-        // Nutritionist storage _nutritionist = nutritionists[msg.sender];
-        // Articles memory article = Articles(
-        //     _title,
-        //     msg.sender,
-        //     _authorName,
-        //     _content
-        // );
-        // _nutritionist.nutritionistArticles.push(article);
-        // allArticles.push(article);
-         INutritionistProfileData.publishArticle(_title, _authorName, _content);
+        INutritionistProfileData(msg.sender).publishArticle(
+            _title,
+            _authorName,
+            _content
+        );
     }
 
-    /**
-     * @inheritdoc ERC165
-     */
     function supportsInterface(
         bytes4 interfaceId
-    ) public view virtual override(IERC165) returns (bool) {
+    ) public view virtual override(ERC165) returns (bool) {
         return
             interfaceId == _INTERFACEID_COMMUNITY_NETWORK ||
             super.supportsInterface(interfaceId);

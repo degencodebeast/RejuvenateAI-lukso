@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.17;
+pragma solidity ^0.8.4;
 
 import {IERC165} from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
-import {ERC165} from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+//import {ERC165} from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import {ERC725YCore} from "@erc725/smart-contracts/contracts/ERC725YCore.sol";
 import {ERC725Y} from "@erc725/smart-contracts/contracts/ERC725Y.sol";
-import {INutritionistProfileData} from "./interfaces/INutritionistProfileData.sol";
+import {IUserProfileData} from "./interfaces/IUserProfileData.sol";
 import {LSP2Utils} from "@lukso/lsp-smart-contracts/contracts/LSP2ERC725YJSONSchema/LSP2Utils.sol";
+import {IERC725Y} from "@erc725/smart-contracts/contracts/interfaces/IERC725Y.sol";
 import "./CommunityNetworkConstants.sol";
 
 contract UserProfileData is IUserProfileData, ERC725Y {
@@ -26,7 +27,7 @@ contract UserProfileData is IUserProfileData, ERC725Y {
         address _owner,
         address _user,
         string memory _userData,
-        UserSubscriptionStatus _subStatus,
+        uint8 _subStatus,
         uint256 _subDeadline
     ) ERC725Y(_owner) {
         user = _user;
@@ -34,7 +35,8 @@ contract UserProfileData is IUserProfileData, ERC725Y {
 
         userDetailsKey = LSP2Utils.generateSingletonKey("userDetails");
 
-        User memory userDetails = User(_userData, _subStatus, _subDeadline);
+
+        User memory userDetails = User(_userData, UserSubscriptionStatus(_subStatus), _subDeadline);
         bytes memory encodedStruct = abi.encode(userDetails);
 
         setData(userDetailsKey, encodedStruct);
@@ -51,15 +53,6 @@ contract UserProfileData is IUserProfileData, ERC725Y {
         UserSubscriptionStatus subStatus;
         uint256 subDeadline;
     }
-
-    // modifier deadlinePassed() {
-    //     bytes memory _userData = getData(userDetailsKey);
-    //     uint256 deadline = _decodeStruct(_userData).subDeadline;
-    //     if (block.timestamp < deadline) {
-    //         revert InvalidDeadline();
-    //     }
-    //     _;
-    // }
 
     function renewSubscription() external onlyOwner {
         bytes memory _userData = getData(userDetailsKey);
@@ -78,14 +71,15 @@ contract UserProfileData is IUserProfileData, ERC725Y {
 
     function _decodeStruct(
         bytes memory data
-    ) internal view returns (User memory) {
-        User memory decodedDataStruct = abi.decode(encodedData, (User));
+    ) internal pure returns (User memory) {
+        User memory decodedDataStruct = abi.decode(data, (User));
         return decodedDataStruct;
     }
 
-    /**
-     * @inheritdoc ERC165
-     */
+    function getUserDetailsKey() public view returns (bytes32) {
+        return userDetailsKey;
+    }
+
     function supportsInterface(
         bytes4 interfaceId
     ) public view virtual override(IERC165, ERC725YCore) returns (bool) {
@@ -93,4 +87,5 @@ contract UserProfileData is IUserProfileData, ERC725Y {
             interfaceId == _INTERFACEID_USER_PROFILE_DATA ||
             super.supportsInterface(interfaceId);
     }
+
 }

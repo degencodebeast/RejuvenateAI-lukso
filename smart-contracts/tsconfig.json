@@ -1,5 +1,5 @@
 {
-  "include": ["./scripts", "./tests", "./typechain-types"],
+  "include": ["./scripts", "./tests", "./typechain-types", "util/erc725.ts", "util/deploy.ts"],
   "files": ["./hardhat.config.ts"],
   "compilerOptions": {
     "target": "es2020",
@@ -8,6 +8,6 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   }
 }

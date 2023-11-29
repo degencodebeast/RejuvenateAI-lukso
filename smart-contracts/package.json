@@ -2,7 +2,13 @@
   "name": "rejuvenate-ai",
   "packageManager": "yarn@3.4.1",
   "scripts": {
-    "build": "hardhat compile --force --show-stack-traces"
+    "node": "yarn hardhat node",
+    "run": "yarn hardhat run",
+    "compile": "yarn hardhat compile",
+    "test": "yarn hardhat test",
+    "build": "hardhat compile --force --show-stack-traces",
+    "deploy-localhost": "yarn hardhat run --network localhost scripts/deploy.js",
+    "deploy-lukso": "yarn hardhat run --network lukso scripts/deploy-lukso.js"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.4.7",
@@ -18,22 +24,27 @@
     "@types/chai": "^4.2.0",
     "@types/mocha": ">=9.1.0",
     "@types/node": ">=12.0.0",
+    "axios": "^0.27.2",
     "chai": "^4.2.0",
     "dotenv": "^16.0.3",
     "ethers": "^5.4.7",
     "hardhat": "^2.12.7",
+    "hardhat-deploy": "^0.11.12",
     "hardhat-gas-reporter": "^1.0.8",
     "mocha": "^10.2.0",
     "openzeppelin-solidity": "^3.4.2",
     "solidity-coverage": "^0.8.0",
     "ts-node": ">=8.0.0",
     "typechain": "^8.1.0",
-    "typescript": ">=4.5.0"
+    "typescript": ">=4.5.0",
+    "web3.storage": "^4.5.5"
   },
   "dependencies": {
     "@lukso/lsp-factory.js": "^3.2.1",
     "@lukso/lsp-smart-contracts": "^0.12.1",
     "@openzeppelin/hardhat-upgrades": "^2.3.0",
-    "openai": "^4.8.0"
+    "moralis": "^2.23.2",
+    "openai": "^4.8.0",
+    "web3": "^4.2.2"
   }
 }

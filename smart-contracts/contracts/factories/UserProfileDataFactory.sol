@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.4;
 
 import {UserProfileData} from "../UserProfileData.sol";
 
-library UserProfileDataFatory {
+library UserProfileDataFactory {
+    
     enum UserSubscriptionStatus {
         NotActive,
         Active,
@@ -22,7 +23,7 @@ library UserProfileDataFatory {
         address _owner,
         address _user,
         string memory _userData,
-        UserSubscriptionStatus _subStatus,
+        uint8 _subStatus,
         uint256 _subDeadline
     ) public returns (address) {
         return
